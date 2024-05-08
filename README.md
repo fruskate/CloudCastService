@@ -25,11 +25,15 @@
 
 1. Клонируем репозиторий:
 
-`git clone git@github.com:fruskate/CloudCastService.git {path}`
+```text
+git clone git@github.com:fruskate/CloudCastService.git {path}
+```
 
 2. Переходим в `{path}` и устанавливаем пакеты Composer:
 
-`composer install`
+```text
+composer install
+```
 
 3. Добавляем базу данных любым известным и привлекательным нам способом.
 
@@ -50,11 +54,15 @@ DB_PASSWORD=
 
 5. Выполним все миграции:
 
-`php artisan october:migrate`
+```text
+php artisan october:migrate
+```
 
 6. Сгенерируем ключ приложения (он добавится в .env файл)
 
-`php artisan key:generate`
+```text
+php artisan key:generate
+```
 
 7. Теперь через браузер смело идём в backend приложения по адресу (из .env файла) `https://weather.test/admin/` и
 регистрируем(создаём аккаунт) админа.
@@ -76,11 +84,15 @@ DB_PASSWORD=
 
 9. Не забываем настроить `CRON` у себя в окружении. Смысл в том, чтобы каждую минуту выполнялась команда:
 
-`php artisan schedule:run`
+```text
+php artisan schedule:run
+```
 
 Как правило достаточно записи в crontab:
 
-`* * * * * php /path_to_project/artisan schedule:run >> /dev/null 2>&1`
+```text
+* * * * * php /path_to_project/artisan schedule:run >> /dev/null 2>&1
+```
 
 10. Проверяем стандартно настройки очередей. По умолчанию настроено на `redis` - у меня поднят локально.
 
@@ -88,4 +100,4 @@ DB_PASSWORD=
 
 ## Работа с API
 
-фух, в разработке )) 
+фух, в разработке ))

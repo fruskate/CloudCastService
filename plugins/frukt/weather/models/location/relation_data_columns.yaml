@@ -1,0 +1,25 @@
+columns:
+    collected_at:
+        label: Collected
+        type: datetime
+        format: l jS \of F Y h:i:s A
+    temp:
+        label: Temperature
+        type: number
+    feels_like:
+        label: Feels like
+        type: number
+    pressure:
+        label: Pressure
+        type: number
+    humidity:
+        label: Humidity
+        type: number
+    created_at:
+        label: Created
+        type: datetime
+        format: d.m.Y H:i
+    provider_id:
+        label: From
+        relation: provider
+        valueFrom: type_name

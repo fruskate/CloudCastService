@@ -1,0 +1,9 @@
+data:
+    label: Weather Data
+    view:
+        list: $/frukt/weather/models/location/relation_data_columns.yaml
+        recordsPerPage: 10
+        toolbarButtons: []
+        defaultSort:
+            column: created_at
+            direction: desc

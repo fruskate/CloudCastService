@@ -42,7 +42,15 @@ class WeatherAggregate extends Command
             $weatherService = WeatherServiceFactory::create($provider->type);
             $weatherData = $weatherService->fetchWeatherData($location->lat, $location->lon);
             $weatherData->location_id = $location->id;
+
+            // This part is GOVNOCODE, but proger want to know name of location =)
+            if ($location->name === null && $provider->type === 1) {
+                $location->name = $weatherData->location_name;
+                $location->save();
+            }
+
             $weatherData->save();
+
 
         } catch (\Exception $e) {
             \Log::error("Error collecting weather data for location {$location->id} from provider {$provider->id}: " . $e->getMessage());

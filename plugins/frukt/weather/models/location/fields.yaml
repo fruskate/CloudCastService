@@ -11,3 +11,9 @@ fields:
         label: Longitude
         span: auto
         type: number
+tabs:
+    fields:
+        data@update:
+            label: Weather Data
+            type: relation
+            tab: Data

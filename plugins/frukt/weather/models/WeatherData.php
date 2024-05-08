@@ -21,4 +21,14 @@ class WeatherData extends Model
     public $rules = [
     ];
 
+    public $belongsTo = [
+        'provider' => [
+            WeatherProvider::class,
+            'key' => 'provider_id'
+        ],
+        'location' => [
+            Location::class
+        ]
+    ];
+
 }

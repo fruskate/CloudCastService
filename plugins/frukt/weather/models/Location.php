@@ -26,4 +26,19 @@ class Location extends Model
 
     protected $fillable = ['name', 'lat', 'lon'];
 
+    public $hasMany = [
+        'data' => WeatherData::class
+    ];
+
+    /*
+     * ATTRIBUTES
+     */
+    public function getLastUpdateAttribute()
+    {
+        $latestWeatherData = $this->data()->orderBy('created_at', 'desc')->first();
+        if (!$latestWeatherData) {
+            return '-';
+        }
+        return $latestWeatherData->created_at->diffForHumans();
+    }
 }

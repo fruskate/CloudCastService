@@ -11,6 +11,14 @@ columns:
         label: Longitude
         type: text
         searchable: true
+    collected:
+        label: Collected
+        relation: data
+        useRelationCount: true
+    last_update:
+        label: Last Update
+        type: text
+        sortable: false
     created_at:
         label: Created
         type: datetime

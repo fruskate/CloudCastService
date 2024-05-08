@@ -27,6 +27,13 @@ class WeatherProvider extends Model
         'type' => 'unique:frukt_weather_weatherproviders,type'
     ];
 
+    public $hasMany = [
+        'data' => [
+            WeatherData::class,
+            'key' => 'provider_id'
+        ]
+    ];
+
     /*
      * OPTIONS
      */
@@ -40,6 +47,14 @@ class WeatherProvider extends Model
         return [
             1 => 'openweathermap.org'
         ];
+    }
+
+    /*
+     * ATTRIBUTES
+     */
+    public function getTypeNameAttribute()
+    {
+        return $this->getTypeOptions()[$this->type];
     }
 
     /*

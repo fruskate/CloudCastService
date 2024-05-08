@@ -85,6 +85,9 @@ class OpenWeatherMapService implements WeatherServiceInterface
 
         $weatherData->collected_at = Carbon::createFromTimestamp($response['dt'], 'UTC');
 
+        // This part is GOVNOCODE, but proger want to know name of location =) 
+        $weatherData->location_name = $response['name'];
+
         return $weatherData;
     }
 }

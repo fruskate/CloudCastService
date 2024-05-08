@@ -48,6 +48,7 @@ class WeatherAggregate extends Command
                 $location->name = $weatherData->location_name;
                 $location->save();
             }
+            unset($weatherData->location_name);
 
             $weatherData->save();
 

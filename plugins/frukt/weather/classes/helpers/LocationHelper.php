@@ -80,7 +80,7 @@ class LocationHelper
     /**
      * Get start and end dates from request
      */
-    public function getDatesFromRequest(\Illuminate\Http\Request $request)
+    public function getDatesFromRequest(\Illuminate\Http\Request $request): array
     {
         return [
             $request->input('start_date', Carbon::now()->format('Y-m-d')),

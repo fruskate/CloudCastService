@@ -31,6 +31,14 @@ class Location extends Model
     ];
 
     /*
+     * EVENTS
+     */
+
+    public function beforeDelete(){
+        $this->data()->delete();
+    }
+
+    /*
      * ATTRIBUTES
      */
     public function getLastUpdateAttribute()

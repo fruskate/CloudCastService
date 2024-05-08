@@ -35,6 +35,16 @@ class WeatherProvider extends Model
     ];
 
     /*
+     * EVENTS
+     */
+    public function beforeDelete(): void
+    {
+        if ($this->data()->count() > 0) {
+            throw new \ValidationException(['error' => 'Database has data from this Weather Provider. Delete not possible.']);
+        }
+    }
+
+    /*
      * OPTIONS
      */
 

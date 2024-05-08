@@ -53,7 +53,7 @@ class WeatherAggregate extends Command
 
 
         } catch (\Exception $e) {
-            \Log::error("Error collecting weather data for location {$location->id} from provider {$provider->id}: " . $e->getMessage());
+            \Log::channel('error')->error("Error collecting weather data for location {$location->id} from provider {$provider->id}: " . $e->getMessage());
         }
     }
 }

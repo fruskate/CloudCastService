@@ -58,7 +58,7 @@ class OpenWeatherMapService implements WeatherServiceInterface
             $data = json_decode($response->getBody()->getContents(), true);
             return $data;
         } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-            \Log::error("API request failed: " . $e->getMessage());
+            \Log::channel('error')->error("API request failed: " . $e->getMessage());
             return null;
         }
     }
@@ -85,7 +85,7 @@ class OpenWeatherMapService implements WeatherServiceInterface
 
         $weatherData->collected_at = Carbon::createFromTimestamp($response['dt'], 'UTC');
 
-        // This part is GOVNOCODE, but proger want to know name of location =) 
+        // This part is GOVNOCODE, but proger want to know name of location =)
         $weatherData->location_name = $response['name'];
 
         return $weatherData;

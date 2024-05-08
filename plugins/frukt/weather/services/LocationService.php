@@ -28,7 +28,7 @@ class LocationService
             return true;
         } catch (\Exception $e) {
             // Логируем ошибку
-            \Log::error("Failed to add location: " . $e->getMessage());
+            \Log::channel('error')->error("Failed to add location: " . $e->getMessage());
             return false;
         }
     }

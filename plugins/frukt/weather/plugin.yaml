@@ -1,0 +1,20 @@
+plugin:
+    name: 'frukt.weather::lang.plugin.name'
+    description: 'frukt.weather::lang.plugin.description'
+    author: Frukt
+    icon: oc-icon-cloud
+    homepage: ''
+navigation:
+    main-menu-item:
+        label: Weather
+        url: /
+        icon: icon-cloud
+        sideMenu:
+            side-menu-item:
+                label: Locations
+                url: frukt/weather/locations
+                icon: icon-compass
+            side-menu-item2:
+                label: 'Weather Providers'
+                url: frukt/weather/weatherproviders
+                icon: icon-compress

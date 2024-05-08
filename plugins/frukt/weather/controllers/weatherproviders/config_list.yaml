@@ -1,0 +1,12 @@
+list: $/frukt/weather/models/weatherprovider/columns.yaml
+modelClass: Frukt\Weather\Models\WeatherProvider
+title: WeatherProviders
+noRecordsMessage: 'backend::lang.list.no_records'
+showSetup: true
+showCheckboxes: true
+recordsPerPage: 20
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: 'backend::lang.list.search_prompt'
+recordUrl: 'frukt/weather/weatherproviders/update/:id'

@@ -1,0 +1,17 @@
+columns:
+    name:
+        label: Name
+        type: text
+        searchable: true
+    lat:
+        label: Latitude
+        type: text
+        searchable: true
+    lon:
+        label: Longitude
+        type: text
+        searchable: true
+    created_at:
+        label: Created
+        type: datetime
+        format: 'd.m.Y H:i'

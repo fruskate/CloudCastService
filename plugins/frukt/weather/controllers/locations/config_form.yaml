@@ -1,0 +1,10 @@
+name: Locations
+form: $/frukt/weather/models/location/fields.yaml
+modelClass: Frukt\Weather\Models\Location
+defaultRedirect: frukt/weather/locations
+create:
+    redirect: 'frukt/weather/locations/update/:id'
+    redirectClose: frukt/weather/locations
+update:
+    redirect: frukt/weather/locations
+    redirectClose: frukt/weather/locations

@@ -1,0 +1,10 @@
+name: WeatherProviders
+form: $/frukt/weather/models/weatherprovider/fields.yaml
+modelClass: Frukt\Weather\Models\WeatherProvider
+defaultRedirect: frukt/weather/weatherproviders
+create:
+    redirect: 'frukt/weather/weatherproviders/update/:id'
+    redirectClose: frukt/weather/weatherproviders
+update:
+    redirect: frukt/weather/weatherproviders
+    redirectClose: frukt/weather/weatherproviders

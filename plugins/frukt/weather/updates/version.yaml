@@ -1,0 +1,11 @@
+v1.0.1:
+    - 'Initialize plugin'
+v1.0.2:
+    - 'Created table frukt_weather_locations'
+    - builder_table_create_frukt_weather_locations.php
+v1.0.3:
+    - 'Created table frukt_weather_weatherproviders'
+    - builder_table_create_frukt_weather_weatherproviders.php
+v1.0.4:
+    - 'Created table frukt_weather_weatherdata'
+    - builder_table_create_frukt_weather_weatherdata.php

@@ -1,0 +1,7 @@
+columns:
+    type:
+        label: Type
+        type: selectable
+    is_active:
+        label: Active
+        type: switch

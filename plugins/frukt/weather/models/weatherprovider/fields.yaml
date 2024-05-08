@@ -1,0 +1,14 @@
+fields:
+    type:
+        label: Type
+        span: auto
+        type: dropdown
+    is_active:
+        label: Active
+        span: auto
+        default: 1
+        type: switch
+    api_key:
+        label: 'Api key'
+        span: full
+        type: text

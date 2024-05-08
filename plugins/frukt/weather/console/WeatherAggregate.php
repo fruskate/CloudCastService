@@ -2,10 +2,10 @@
 
 namespace Frukt\Weather\console;
 
-use Frukt\Weather\Classes\WeatherServiceFactory;
 use Frukt\Weather\Models\Location;
 use Frukt\Weather\Models\WeatherProvider;
 use Illuminate\Console\Command;
+use Queue;
 
 class WeatherAggregate extends Command
 {
@@ -31,30 +31,11 @@ class WeatherAggregate extends Command
 
         foreach ($locations as $location) {
             foreach ($weatherProviders as $provider) {
-                $this->collectAndSaveWeatherData($location, $provider);
+                Queue::push(\Frukt\Weather\Jobs\FetchWeather::class, [
+                    'locationId' => $location->id,
+                    'providerId' => $provider->id,
+                ]);
             }
-        }
-    }
-
-    private function collectAndSaveWeatherData(Location $location, WeatherProvider $provider)
-    {
-        try {
-            $weatherService = WeatherServiceFactory::create($provider->type);
-            $weatherData = $weatherService->fetchWeatherData($location->lat, $location->lon);
-            $weatherData->location_id = $location->id;
-
-            // This part is GOVNOCODE, but proger want to know name of location =)
-            if ($location->name === null && $provider->type === 1) {
-                $location->name = $weatherData->location_name;
-                $location->save();
-            }
-            unset($weatherData->location_name);
-
-            $weatherData->save();
-
-
-        } catch (\Exception $e) {
-            \Log::channel('error')->error("Error collecting weather data for location {$location->id} from provider {$provider->id}: " . $e->getMessage());
         }
     }
 }

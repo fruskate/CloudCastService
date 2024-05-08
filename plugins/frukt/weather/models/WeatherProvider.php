@@ -55,7 +55,8 @@ class WeatherProvider extends Model
     public function getTypeOptions() : array
     {
         return [
-            1 => 'openweathermap.org'
+            1 => 'openweathermap.org',
+            2 => 'weatherapi.com'
         ];
     }
 

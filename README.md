@@ -1,74 +1,91 @@
-<p align="center">
-    <img src="https://github.com/octobercms/october/blob/develop/themes/demo/assets/images/favicon.png?raw=true" alt="October" width="25%" height="25%" />
-</p>
+# Микросервис по агрегации данных из свободных источников прогноза погоды
 
-[October](https://octobercms.com) is a Content Management System (CMS) and web platform whose sole purpose is to make your development workflow simple again. It was born out of frustration with existing systems. We feel building websites has become a convoluted and confusing process that leaves developers unsatisfied. We want to turn you around to the simpler side and get back to basics.
+## Содержание
 
-October's mission is to show the world that web development is not rocket science.
+* [Установка приложения](#установка-приложения)
+* [Работа с API](#работа-с-api)
 
-[![Build Status](https://github.com/octobercms/library/actions/workflows/tests.yml/badge.svg)](https://octobercms.com/)
-[![Downloads](https://img.shields.io/packagist/dt/october/rain)](https://docs.octobercms.com/)
-[![Version](https://img.shields.io/packagist/v/october/october)](https://octobercms.com/changelog)
-[![License](https://poser.pugx.org/october/october/license.svg)](./LICENSE.md)
+## Установка приложения
 
-> *Please note*: October is open source but it is not free software. A license with a small fee is required for each website you build with October CMS.
+системные требования:
+```text
+    PHP version 8.0.0 or higher
+    Composer 2.0 or higher
+    PDO PHP Extension
+    cURL PHP Extension
+    OpenSSL PHP Extension
+    Mbstring PHP Extension
+    ZipArchive PHP Extension
+    GD PHP Extension
+    SimpleXML PHP Extension.
+```
+```text
+    MySQL 5.7 or MariaDB 10.2.
+```
 
-## Installing October
+1. Клонируем репозиторий:
 
-Instructions on how to install October can be found at the [installation guide](https://docs.octobercms.com/3.x/setup/installation.html).
+`git clone git@github.com:fruskate/CloudCastService.git {path}`
 
-### Quick Start Installation
+2. Переходим в `{path}` и устанавливаем пакеты Composer:
 
-If you have composer installed, run this in your terminal to install October CMS from command line. This will place the files in a directory named **myoctober**.
+`composer install`
 
-    composer create-project october/october myoctober
+3. Добавляем базу данных любым известным и привлекательным нам способом.
 
-If you plan on using a database, run this command inside the application directory.
+4. Создадим файл с настройками окружения, для этого скопируем в корне проекта `.env.example` `->` `.env`
 
-    php artisan october:install
+Будьте внимательны, чтобы заменить данные подключения к БД, а также URL проекта в `.env` файле:
 
-## Learning October
+```text
+APP_URL=https://weather.test
 
-The best place to learn October CMS is by [reading the documentation](https://docs.octobercms.com) or [following some tutorials](https://octobercms.com/support/articles/tutorials).
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=weather
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-You may also watch this [introductory video](https://www.youtube.com/watch?v=yLZTOeOS7wI). Make sure to check out our [official YouTube channel](https://www.youtube.com/c/OctoberCMSOfficial). There is also the excellent video series by [Watch & Learn](https://watch-learn.com/series/making-websites-with-october-cms).
+5. Выполним все миграции:
 
-For code examples of building with October CMS, visit the [RainLab Plugin Suite](https://github.com/rainlab) or the [October Demos Repo](https://github.com/octoberdemos).
+`php artisan october:migrate`
 
-## Coding Standards
+6. Сгенерируем ключ приложения (он добавится в .env файл)
 
-Please follow the following guides and code standards:
+`php artisan key:generate`
 
-* [PSR 4 Coding Standards](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md)
-* [PSR 2 Coding Style Guide](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)
-* [PSR 1 Coding Standards](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md)
+7. Теперь через браузер смело идём в backend приложения по адресу (из .env файла) `https://weather.test/admin/` и
+регистрируем(создаём аккаунт) админа.
 
-## Security Vulnerabilities
+8. Вуаля, мы в админке. Давайте настроим пару погодных провайдеров. Для этого перейдём в `Weather` `->` `Weather Provider`
+и нажмём на кнопочку `Создать`.
 
-Please review [our security policy](https://github.com/octobercms/october/security/policy) on how to report security vulnerabilities.
+Далее выберим тип провайдера `openweathermap.org` проверим чтобы свитч показывал что провайдер активен и добавим API
+ключик: `210a6469c633f37a2d9a6738a59ab633` - да, я уже его получил =)
 
-## Development Team
+Сохраним.
 
-October CMS was created by [Alexey Bobkov](https://www.linkedin.com/in/alexey-bobkov-232ba02b/) and [Samuel Georges](https://www.linkedin.com/in/samuel-georges-0a964131/), who both continue to develop the platform.
+Нам надо минимально 2 погодных провайдера создать, поэтому добавим второй:
 
-## Foundation library
+тип провайдера: `weatherapi.com`
+ключ: `e9dd73fdc3cd490791362926240805`
 
-The CMS uses [Laravel](https://laravel.com) as a foundation PHP framework.
+Сохраним.
 
-## Contact
+9. Не забываем настроить `CRON` у себя в окружении. Смысл в том, чтобы каждую минуту выполнялась команда:
 
-For announcements and updates:
+`php artisan schedule:run`
 
-* [Contact Us Page](http://octoberdev.test/contact)
-* [Follow us on Twitter](https://twitter.com/octobercms)
-* [Like us on Facebook](https://facebook.com/octobercms)
+Как правило достаточно записи в crontab:
 
-To chat or hang out:
+`* * * * * php /path_to_project/artisan schedule:run >> /dev/null 2>&1`
 
-* [Join us on Slack](https://octobercms.slack.com)
-* [Join us on Discord](https://discord.gg/gEKgwSZ)
-* [Join us on Telegram](https://t.me/octoberchat)
+10. Проверяем стандартно настройки очередей. По умолчанию настроено на `redis` - у меня поднят локально.
 
-## License
+11. Наслаждаемся.
 
-The October CMS platform is licensed software, see [End User License Agreement](./LICENSE.md) (EULA) for more details.
+## Работа с API
+
+фух, в разработке )) 

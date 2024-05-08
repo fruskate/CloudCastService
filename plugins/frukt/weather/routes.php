@@ -2,6 +2,7 @@
 
 namespace Frukt\Weather;
 
+use Frukt\Weather\Models\Location;
 use Frukt\Weather\services\LocationService;
 use Route;
 use Response;
@@ -43,6 +44,27 @@ Route::group(['prefix' => 'api/v1'], function () {
             'status' => $result ? 'ok' : 'error',
             'response' => [
                 'description' => $result ? 'Location added successfully' : 'Failed to add location'
+            ]
+        ]);
+    });
+
+    /**
+     * Show locations request
+     * GET /api/v1/locations
+     */
+    Route::get('locations', function (Request $request) {
+
+        $locations = Location::all(['id', 'name', 'lat', 'lon'])->map(function ($location) {
+            $location->lat = floatval($location->lat);
+            $location->lon = floatval($location->lon);
+            return $location;
+        });
+
+        return Response::json([
+            'status' => 'ok',
+            'response' => [
+                'description' => '',
+                'data' => $locations
             ]
         ]);
     });

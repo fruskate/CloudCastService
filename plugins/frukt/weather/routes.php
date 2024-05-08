@@ -2,11 +2,7 @@
 
 namespace Frukt\Weather;
 
-use Cache;
-use Carbon\Carbon;
-use Frukt\Weather\Models\Location;
-use Frukt\Weather\Models\WeatherData;
-use Frukt\Weather\services\LocationService;
+use Frukt\Weather\Classes\helpers\LocationHelper;
 use Route;
 use Response;
 use Illuminate\Http\Request;
@@ -41,7 +37,7 @@ Route::middleware('Frukt\\Weather\\Middlewares\\RequestLogger')->group(function 
                 'name' => 'sometimes|string|max:255'
             ]);
 
-            $locationService = new LocationService();
+            $locationService = new LocationHelper();
             $result = $locationService->addLocation($validated);
 
             return Response::json([
@@ -56,18 +52,15 @@ Route::middleware('Frukt\\Weather\\Middlewares\\RequestLogger')->group(function 
          * Show locations request
          * GET /api/v1/locations
          */
-        Route::get('locations', function (Request $request) {
+        Route::get('locations', function () {
 
-            $locations = Location::all(['id', 'name', 'lat', 'lon'])->map(function ($location) {
-                $location->lat = floatval($location->lat);
-                $location->lon = floatval($location->lon);
-                return $location;
-            });
+            $locationService = new LocationHelper();
+            $locations = $locationService->getLocations();
 
             return Response::json([
                 'status' => 'ok',
                 'response' => [
-                    'description' => '',
+                    'description' => "Shown {$locations->count()} locations",
                     'data' => $locations
                 ]
             ]);
@@ -78,31 +71,16 @@ Route::middleware('Frukt\\Weather\\Middlewares\\RequestLogger')->group(function 
          * GET /api/v1/locations/{id}/average-weather
          */
         Route::get('locations/{id}/average-weather', function (Request $request, $locationId) {
-            $startDate = $request->input('start_date', Carbon::now()->format('Y-m-d'));
-            $endDate = $request->input('end_date', Carbon::now()->format('Y-m-d'));
 
-            $cacheKey = "location_{$locationId}_weather_from_{$startDate}_to_{$endDate}";
+            $locationService = new LocationHelper();
+            list($from, $to) = $locationService->getDatesFromRequest($request);
+            $averageWeather = $locationService->getAverageWeatherForLocation($request, $locationId, $from, $to);
 
-            $averageWeather = Cache::remember($cacheKey, 60, function () use ($locationId, $startDate, $endDate) {
-                return WeatherData::where('location_id', $locationId)
-                    ->whereDate('collected_at', '>=', Carbon::parse($startDate)->startOfDay()->toDateTimeString())
-                    ->whereDate('collected_at', '<=', Carbon::parse($endDate)->endOfDay()->toDateTimeString())
-                    ->selectRaw('AVG(temp) as average_temp,
-                        AVG(humidity) as average_humidity,
-                        AVG(pressure) as average_pressure')
-                    ->first();
-            });
-
-            if ($averageWeather) {
-                $averageWeather->average_temp = floatval($averageWeather->average_temp);
-                $averageWeather->average_humidity = floatval($averageWeather->average_humidity);
-                $averageWeather->average_pressure = floatval($averageWeather->average_pressure);
-            }
 
             return Response::json([
                 'status' => 'ok',
                 'response' => [
-                    'description' => '',
+                    'description' => "Average data collected from {$from} to {$to}",
                     'data' => $averageWeather
                 ]
             ]);
